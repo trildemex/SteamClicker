@@ -16,7 +16,7 @@ function PrettyUpdate (elem_id, contents){
 	document.getElementById(elem_id).innerHTML = prettify(contents);
 }
 
-//Shortcut Updates
+//Shortcuts
 function UpdateScrap(){
 	PrettyUpdate("scrap",scrap);
 }
@@ -25,7 +25,18 @@ function UpdateHeat(){
 	PrettyUpdate("heat",heat);
 }
 
-var scrap = 0;
+//Scaling
+
+var SCRAP_SCALING = 1.15
+var HEAT_SCALING = 1.05
+
+function ScaleBuildingCost(baseprice, BuildingQty){
+	return Math.floor(baseprice * Math.pow(SCRAP_SCALING,BuildingQty))
+}
+
+function ScaleBuildingHeat(baseprice, BuildingQty){
+	return Math.floor(baseprice * Math.pow(HEAT_SCALING,BuildingQty))
+}
 
 //function for clicky button
 function GatherScrap(){
@@ -34,47 +45,60 @@ function GatherScrap(){
 }
 
 //Unit Statistics
-var OrbDroidScrap=1;
-var OrbDroidQty=0;
+var OrbDroidScrap= 1;
+var OrbDroidQty= 0;
 var OrbDroidPerSec = (OrbDroidQty*OrbDroidScrap);
-var CoolieBotQty=0;
-var CoolieBotHeatRegen=0.2;
+var CoolieBotQty= 0;
+var CoolieBotHeatRegen= 0.2;
 var CoolieBotHeatRegenPerSec= CoolieBotQty*CoolieBotHeatRegen;
+var FlamebearerGolemQty= 0;
+var FlamebearerGolemHeatMax= 10;
+var FlamebearerGolemTotalHeatMax = FlamebearerGolemQty * FlamebearerGolemHeatMax;
+
+//Scrap Variables
+var scrap = 0;
+var TotalScrapPerSecond = OrbDroidPerSec
 
 //Heat Variables
 var heat = 0;
-var maxheat = 100;
-var heatRegen = 0.2 + (CoolieBotQty*CoolieBotHeatRegen)
+heatMax = 50 + (FlamebearerGolemHeatMax*FlamebearerGolemQty);
+var heatRegen = 0.2 + (CoolieBotHeatRegen*CoolieBotQty);
 
 //Buying Units
 function GainOrbDroid(){
 	//calculate cost of next unit
-	 var OrbDroidCost = Math.floor(15 * Math.pow(1.15,OrbDroidQty)); 
-	 var OrbDroidHeat = Math.floor(2 * Math.pow(1.1,OrbDroidQty)); 
+	 var OrbDroidCost = ScaleBuildingCost(15, OrbDroidQty); 
+	 var OrbDroidHeat = ScaleBuildingHeat(2, OrbDroidQty); 
 
 	//checks for scrap and heat
-	if (maxheat-heat >= OrbDroidHeat && scrap >= OrbDroidCost){
-		OrbDroidQty = OrbDroidQty + 1;
+	if (heatMax-heat >= OrbDroidHeat && scrap >= OrbDroidCost){
+		OrbDroidQty += 1;
 		OrbDroidPerSec = OrbDroidQty * OrbDroidScrap;
+		TotalScrapPerSecond = OrbDroidPerSec;
 		scrap -= OrbDroidCost;
 		heat += OrbDroidHeat;
 		UpdateScrap();
 		UpdateHeat();
 		Update("OrbDroidQty", OrbDroidQty);
 		Update("OrbDroidPerSec", OrbDroidPerSec);
-		Update("OrbDroidCost", OrbDroidCost);
-		Update("OrbDroidHeat", OrbDroidHeat);	
+		Update("TotalScrapPerSecond", TotalScrapPerSecond);
+	
+	//updates cost of next building
+	 var nextOrbDroidCost = ScaleBuildingCost(15, OrbDroidQty);
+		Update('OrbDroidCost', nextOrbDroidCost);
+	 var nextOrbDroidHeat = ScaleBuildingHeat(2, OrbDroidQty);
+		Update('OrbDroidHeat', nextOrbDroidHeat);
 	}
 }
 
 function GainCoolieBot(){
 	//calculate cost of next unit
-	 var CoolieBotCost = Math.floor(10 * Math.pow(1.15,CoolieBotQty)); 
-	 var CoolieBotHeat = Math.floor(3 * Math.pow(1.1,CoolieBotQty)); 
+	 var CoolieBotCost = ScaleBuildingCost(10, CoolieBotQty);
+	 var CoolieBotHeat = ScaleBuildingHeat(3, CoolieBotQty);
 
 	//checks for scrap and heat
-	if (maxheat-heat >= CoolieBotHeat && scrap >= CoolieBotCost){
-		CoolieBotQty = CoolieBotQty + 1;
+	if (heatMax-heat >= CoolieBotHeat && scrap >= CoolieBotCost){
+		CoolieBotQty += 1;
 		CoolieBotHeatRegenPerSec = CoolieBotQty * CoolieBotHeatRegen;
 		heatRegen = 0.2 + (CoolieBotQty*CoolieBotHeatRegen);
 		scrap -= CoolieBotCost;
@@ -83,9 +107,41 @@ function GainCoolieBot(){
 		UpdateHeat();
 		Update("CoolieBotQty", CoolieBotQty);
 		PrettyUpdate("CoolieBotHeatRegenPerSec", CoolieBotHeatRegenPerSec);
-		Update("CoolieBotCost", CoolieBotCost);
-		Update("CoolieBotHeat", CoolieBotHeat);
 		PrettyUpdate("heatRegen", heatRegen);
+		
+	//updates cost of next building
+	var nextCoolieBotCost = ScaleBuildingCost(10, CoolieBotQty);
+		Update('CoolieBotCost', nextCoolieBotCost);
+	 var nextCoolieBotHeat = ScaleBuildingHeat(3, CoolieBotQty);
+		Update('CoolieBotHeat', nextCoolieBotHeat);
+	}
+}
+
+function GainFlamebearerGolem(){
+	//calculate cost of next unit
+	 var FlamebearerGolemCost = ScaleBuildingCost(5, FlamebearerGolemQty);
+	 var FlamebearerGolemHeat = ScaleBuildingHeat(10, FlamebearerGolemQty);
+
+	//checks for scrap and heat
+	if (heatMax-heat >= FlamebearerGolemHeat && scrap >= FlamebearerGolemCost){
+		FlamebearerGolemQty += 1;
+		FlamebearerGolemTotalHeatMax = (FlamebearerGolemQty * FlamebearerGolemHeatMax);
+		heatMax = 50 + (FlamebearerGolemHeatMax*FlamebearerGolemQty);
+		scrap -= FlamebearerGolemCost;
+		heat += FlamebearerGolemHeat;
+		UpdateScrap();
+		UpdateHeat();
+		Update("FlamebearerGolemQty", FlamebearerGolemQty);
+		PrettyUpdate("FlamebearerGolemTotalHeatMax", FlamebearerGolemTotalHeatMax);
+		PrettyUpdate("heatMax", heatMax);
+				Update("FlamebearerGolemCost", FlamebearerGolemCost);
+		Update("FlamebearerGolemHeat", FlamebearerGolemHeat);
+	
+	//updates cost of next building
+	var nextFlamebearerGolemCost = ScaleBuildingCost(5, FlamebearerGolemQty);
+		Update('FlamebearerGolemCost', nextFlamebearerGolemCost);
+	var nextFlamebearerGolemHeat = ScaleBuildingHeat(10, FlamebearerGolemQty);
+		Update('FlamebearerGolemHeat', nextFlamebearerGolemHeat);
 	}
 }
 
@@ -99,7 +155,7 @@ function Tick(){
 	if (heat<=0){
 		heat = 0
 	}
-	UpdateScrap()
-	UpdateHeat()
+	UpdateScrap();
+	UpdateHeat();
 }
 	

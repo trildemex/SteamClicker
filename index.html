@@ -12,6 +12,7 @@
 		<div id="game-title">
 		SteamClicker
 		</div>
+		<div class="block">Use "ctrl+shift+R" to force refresh if you have an old version of the game</div>
 	</div>
 
 	<div id="content">
@@ -21,7 +22,11 @@
 			</div>
 			
 			<div>
-				You have <span id="heat">0</span>/<span id="maxheat">100</span> heat.
+				Your units are producing <span id="TotalScrapPerSecond">0</span> scrap per second.
+			</div>	
+			
+			<div>
+				You have <span id="heat">0</span>/<span id="heatMax">50</span> heat.
 			</div>
 			
 			<div>
@@ -32,6 +37,9 @@
 
 		<div id="clickables" class="block">
 			<input type="button" value="Gather Scrap" onclick="GatherScrap()">
+			<br>
+			<br>
+			Use your Magnetiserator to gather scrap!
 		</div> 
 
 		<div id="buildings" class="block">
@@ -77,13 +85,36 @@
 				</div>
 				
 				<div>
-					Reduces <span id="CoolieBotHeatRegenPerSec">0.2</span> heat per second.
+					Reduces <span id="CoolieBotHeatRegenPerSec">0</span> heat per second.
+				</div>
+			</div> 
+			<br>
+			<div id="Building3">
+				<input title="FlamebearerGolems can safely absorb high amounts of heat for you, keeping you safe from overheating." type="button" value="Construct FlamebearerGolem" onclick="GainFlamebearerGolem();">
+				<div>
+					Construct a FlamebearerGolem with <span id="FlamebearerGolemCost">5</span> scrap.
+				</div>
+				
+				<div>
+					Also causes you to gain <span id="FlamebearerGolemHeat">10</span> heat.
+				</div>
+				
+				<div>
+					Each FlamebearerGolem increases maximum heat by <span id="FlamebearerGolemHeatMax">10</span>.
+				</div>
+
+				<div>
+					You own <span id="FlamebearerGolemQty">0</span> FlamebearerGolem.
+				</div>
+				
+				<div>
+					Increases your maximum heat by <span id="FlamebearerGolemTotalHeatMax">0</span> in total.
 				</div>
 			</div> 
 		</div>
 		
 		<div id="upgrades" class="block">
-			Upgrades
+			Upgrades (Do Not Work Yet)
 			<div>
 				<table>
 					<tr>
