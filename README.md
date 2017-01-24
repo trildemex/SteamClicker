@@ -2,6 +2,7 @@
 My First Clicker *babyface*
 
 v0.03
+
 -Log Started
 
 -FlamebearerGolems added
