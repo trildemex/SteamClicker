@@ -30,7 +30,7 @@ var scrap = 0;
 //Heat Variables
 var heat = 0;
 var maxheat = 100;
-var heatRegen = 0.5
+var heatRegen = 0.2
 
 //function for clicky button
 function GatherScrap(){
@@ -41,9 +41,10 @@ function GatherScrap(){
 //Unit Statistics
 var OrbDroidScrap=1;
 var OrbDroidQty=0;
-var OrbDroidPerSec = OrbDroidQty*OrbDroidScrap;
+var OrbDroidPerSec = (OrbDroidQty*OrbDroidScrap)
 
-		
+
+//Buying Units
 function GainOrbDroid(){
 	//calculate cost of next unit
 	 var OrbDroidCost = Math.floor(15 * Math.pow(1.15,OrbDroidQty)); 
@@ -65,6 +66,7 @@ function GainOrbDroid(){
 	}
 }
 
+//Buying Upgrades
 
 function Tick(){
 	scrap = scrap + (OrbDroidPerSec);

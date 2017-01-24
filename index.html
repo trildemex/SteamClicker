@@ -23,6 +23,10 @@
 			<div>
 				You have <span id="heat">0</span>/<span id="maxheat">100</span> heat.
 			</div>
+			
+			<div>
+				Your heat reduces by <span id="heatregen">0.2</span> per second.
+			</div>
 
 		</div> 
 
@@ -32,7 +36,7 @@
 
 		<div id="buildings" class="block">
 			<div id="Building1">
-				<input type="button" value="Construct OrbDroid" onclick="GainOrbDroid();">
+				<input title="OrbDroids are simplistic machines that will fly around, gathering scrap for you." type="button" value="Construct OrbDroid" onclick="GainOrbDroid();">
 				<div>
 					Construct an OrbDroid with <span id="OrbDroidCost">15</span> scrap.
 				</div>
@@ -58,6 +62,17 @@
 		
 		<div id="upgrades" class="block">
 			Upgrades
+			<div>
+				<table>
+					<tr>
+						<th>Upgrade Name</th>
+						<th>Description</th>
+					</tr>
+					<tr>
+						<td title="You need at least 10 OrbDroids to purchase this upgrade" onclick"BuyUpgadeOrbDroidNetwork">OrbDroid Network</td>
+						<td>Create an OrbDroid Network so that your OrbDroids can communicate with each other. Increases your OrbDroid's scrap per second per OrbDroid you've constructed.</td>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
