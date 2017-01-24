@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Steampunk Clicker
+<title>SteamClicker
 </title>
  <link rel="stylesheet" type="text/css" href="incremental.css"> 
 <script type="text/javascript" src="incremental.js"></script>
@@ -10,7 +10,7 @@
 <div id="page">
 	<div id="header">
 		<div id="game-title">
-		Steampunk Clicker
+		SteamClicker
 		</div>
 	</div>
 
@@ -25,7 +25,7 @@
 			</div>
 			
 			<div>
-				Your heat reduces by <span id="heatregen">0.2</span> per second.
+				Your heat reduces by <span id="heatRegen">0.2</span> per second.
 			</div>
 
 		</div> 
@@ -57,7 +57,29 @@
 					Generates <span id="OrbDroidPerSec">0</span> scrap per second.
 				</div>
 			</div> 
+			<br>
+			<div id="Building2">
+				<input title="CoolieBots patrol the area, releasing gushes of cold air in heated areas." type="button" value="Construct CoolieBot" onclick="GainCoolieBot();">
+				<div>
+					Construct a CoolieBot with <span id="CoolieBotCost">10</span> scrap.
+				</div>
+				
+				<div>
+					Also causes you to gain <span id="CoolieBotHeat">3</span> heat.
+				</div>
+				
+				<div>
+					Each CoolieBot reduces heat by <span id="CoolieBotHeatRegen">0.2</span> each second.
+				</div>
 
+				<div>
+					You own <span id="CoolieBotQty">0</span> CoolieBots.
+				</div>
+				
+				<div>
+					Reduces <span id="CoolieBotHeatRegenPerSec">0.2</span> heat per second.
+				</div>
+			</div> 
 		</div>
 		
 		<div id="upgrades" class="block">

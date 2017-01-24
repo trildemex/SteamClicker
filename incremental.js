@@ -27,11 +27,6 @@ function UpdateHeat(){
 
 var scrap = 0;
 
-//Heat Variables
-var heat = 0;
-var maxheat = 100;
-var heatRegen = 0.2
-
 //function for clicky button
 function GatherScrap(){
 	scrap += 1;
@@ -41,8 +36,15 @@ function GatherScrap(){
 //Unit Statistics
 var OrbDroidScrap=1;
 var OrbDroidQty=0;
-var OrbDroidPerSec = (OrbDroidQty*OrbDroidScrap)
+var OrbDroidPerSec = (OrbDroidQty*OrbDroidScrap);
+var CoolieBotQty=0;
+var CoolieBotHeatRegen=0.2;
+var CoolieBotHeatRegenPerSec= CoolieBotQty*CoolieBotHeatRegen;
 
+//Heat Variables
+var heat = 0;
+var maxheat = 100;
+var heatRegen = 0.2 + (CoolieBotQty*CoolieBotHeatRegen)
 
 //Buying Units
 function GainOrbDroid(){
@@ -60,9 +62,30 @@ function GainOrbDroid(){
 		UpdateHeat();
 		Update("OrbDroidQty", OrbDroidQty);
 		Update("OrbDroidPerSec", OrbDroidPerSec);
-		Update("OrbDroidPerSec", OrbDroidPerSec);
 		Update("OrbDroidCost", OrbDroidCost);
 		Update("OrbDroidHeat", OrbDroidHeat);	
+	}
+}
+
+function GainCoolieBot(){
+	//calculate cost of next unit
+	 var CoolieBotCost = Math.floor(10 * Math.pow(1.15,CoolieBotQty)); 
+	 var CoolieBotHeat = Math.floor(3 * Math.pow(1.1,CoolieBotQty)); 
+
+	//checks for scrap and heat
+	if (maxheat-heat >= CoolieBotHeat && scrap >= CoolieBotCost){
+		CoolieBotQty = CoolieBotQty + 1;
+		CoolieBotHeatRegenPerSec = CoolieBotQty * CoolieBotHeatRegen;
+		heatRegen = 0.2 + (CoolieBotQty*CoolieBotHeatRegen);
+		scrap -= CoolieBotCost;
+		heat += CoolieBotHeat;
+		UpdateScrap();
+		UpdateHeat();
+		Update("CoolieBotQty", CoolieBotQty);
+		PrettyUpdate("CoolieBotHeatRegenPerSec", CoolieBotHeatRegenPerSec);
+		Update("CoolieBotCost", CoolieBotCost);
+		Update("CoolieBotHeat", CoolieBotHeat);
+		PrettyUpdate("heatRegen", heatRegen);
 	}
 }
 
