@@ -200,3 +200,24 @@ function TimeTick(){
 	Update("minute", twoDigit(time.minute));
 	Update("hour", twoDigit(time.hour));
 }
+
+//SaveLoad Functions
+var SaveDataObject = {
+	time : time,
+	scrap : scrap,
+}
+
+
+function saveData(){
+	localStorage.setItem('SteamClickerSaveData', JSON.stringify(SaveDataObject));
+}
+
+
+function loadData(){
+	SaveDataObject = JSON.parse(SteamClickerSaveData);
+}
+
+function deleteData(){
+	localStorage.removeItem("SteamClickerSaveData")
+}
+	
