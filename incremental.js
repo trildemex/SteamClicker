@@ -202,19 +202,13 @@ function TimeTick(){
 }
 
 //SaveLoad Functions
-var SaveDataObject = {
-	time : time,
-	scrap : scrap,
-}
-
-
 function saveData(){
-	localStorage.setItem('SteamClickerSaveData', JSON.stringify(SaveDataObject));
+	localStorage.setItem('SteamClickerSaveData', JSON.stringify(time));
 }
 
 
 function loadData(){
-	SaveDataObject = JSON.parse(SteamClickerSaveData);
+	time = JSON.parse(SteamClickerSaveData);
 }
 
 function deleteData(){
